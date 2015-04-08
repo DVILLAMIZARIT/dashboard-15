@@ -1,5 +1,5 @@
     "name": "Yves01/dashboard",
-    "type": "library",
+    "type": "project",
     "description": "ready to use dashboard",
     "keywords": ["mysql","dashboard"],
     "license": "GNU",
