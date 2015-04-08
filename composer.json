@@ -1,1 +1,21 @@
-
+    "name": "Yves01/dashboard",
+    "type": "library",
+    "description": "ready to use dashboard",
+    "keywords": ["mysql","dashboard"],
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "yves",
+            "homepage": "one day....",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "laravel/framework": "5.0.*",
+		    "frozennode/administrator": "dev-master",
+		    "illuminate/html": "~5.0",
+		    "doctrine/dbal": "~2.5",
+		    "twbs/bootstrap": "~3.3",
+		    "nesbot/carbon": "~1.18"
+    },
