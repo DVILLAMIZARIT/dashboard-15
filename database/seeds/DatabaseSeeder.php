@@ -72,6 +72,7 @@ class ConversationSeeder extends Seeder {
 		$request =new CreateConversationRequest();
 		$request->Title="Demonstration: Conversation level contain title";
 		$request->Content="Demonstration: Thread level contain content";
+		$request->Pending=false;
 		Conversation::customCreate($request);	
 		
 		/* roughly equivalent to the following instructions without selection the first user available

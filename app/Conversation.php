@@ -51,7 +51,13 @@ class Conversation extends Model {
 				$conv->user_id=\Auth::id();
 			}
 		}
+		// if Pending status is specified we take it, if not default value will be applied (false)
+		if(!$request->has('Pending'))
+		{
 
+			$conv->Pending=	$request->Pending;
+		}
+	
 		$conv->created_at= Carbon::now();
 		$conv->save();
 		
@@ -61,6 +67,7 @@ class Conversation extends Model {
 		$thread->Content=$request->Content;
 		$thread->conversation_id=$conv->id;
 		$thread->created_at=Carbon::now();
+		$thread->Pending = $conv->Pending;
 		$thread->save();
 		
 		return true;
