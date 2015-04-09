@@ -45,5 +45,6 @@
 	},
 	"config": {
 		"preferred-install": "dist"
-	}
+	},
+	"name":"yves01/dashboard"
 }
