@@ -1,4 +1,5 @@
 {
+	"name":"yves01/dashboard",
 	"minimum-stability": "dev",
 	"description": "Dashboard with Laravel and Laravel Administrator Framework.",
 	"keywords": ["dashboard", "laravel", "yves01"],
@@ -45,6 +46,5 @@
 	},
 	"config": {
 		"preferred-install": "dist"
-	},
-	"name":"yves01/dashboard"
+	}
 }
