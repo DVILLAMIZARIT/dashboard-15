@@ -1,6 +1,6 @@
 {
 	"name": "laravel/laravel",
-	"minimum-stability": "dev",
+	"minimum-stability": "dev-master",
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
