@@ -2,7 +2,7 @@
 	"name": "yves01/dashboard",
 	"minimum-stability": "dev",
 	"description": "Dashboard with Laravel and Laravel Administrator Framework.",
-	"keywords": ["framework", "laravel"],
+	"keywords": ["dashboard", "laravel", "yves01"],
 	"license": "MIT",
 	"type": "project",
 	"require": {
