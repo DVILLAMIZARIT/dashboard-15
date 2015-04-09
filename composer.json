@@ -1,6 +1,5 @@
 {
 	"minimum-stability": "dev",
-	"name":"yves01/dashboard",
 	"description": "Dashboard with Laravel and Laravel Administrator Framework.",
 	"keywords": ["dashboard", "laravel", "yves01"],
 	"license": "MIT",
@@ -46,5 +45,5 @@
 	},
 	"config": {
 		"preferred-install": "dist"
-	},
+	}
 }
