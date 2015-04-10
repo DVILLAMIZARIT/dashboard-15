@@ -70,6 +70,8 @@ class ThreadController extends Controller {
 		$thread->created_at=Carbon::now();
 		$thread->save();
 		
+		session()->flash('flash_message', 'Thread created and waiting for approval');
+		
 		return redirect('Thread/'.$request->id);
 	}
 
@@ -136,16 +138,19 @@ class ThreadController extends Controller {
 		if($request->has('Content'))
 		{	
 			$aThread->update($request->all());
+			session()->flash('flash_message', 'Thread updated');
 		}
 		else
 		{	
 			if ($aThread->Pending == 0)
 			{
 				$aThread->Pending = 1;
+				session()->flash('flash_message', 'Thread unpublished');
 			}
 			else
 			{
 				$aThread->Pending = 0;
+				session()->flash('flash_message', 'Thread published');
 			}
 			$aThread->save();
 		}

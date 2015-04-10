@@ -25,7 +25,7 @@ class DashboardController extends Controller {
 	
 	/**
 	 * Display a listing of the resource.
-	 *
+	 * Display every conversation/topics with the first Thread related
 	 * @return Response
 	 */
 	public function index()
@@ -61,7 +61,7 @@ class DashboardController extends Controller {
 		}
 		
 	
-		// we recover the first Threads according to the conversations which passed the previous tests
+		// we recover the first Thread according to the conversations which passed the previous tests
 		foreach($Conversations as $Conversation)
 		{
 			$Threads[$count]= Thread::where('conversation_id','=',$Conversation->id)->firstOrFail();
@@ -105,6 +105,8 @@ class DashboardController extends Controller {
 		$thread->created_at=Carbon::now();
 		$thread->save();
 		
+		// create a session for this flash message 
+		session()->flash('flash_message', 'Conversation created and waiting for approval');
 		return redirect('Dashboard');
 	}
 
@@ -139,7 +141,9 @@ class DashboardController extends Controller {
 		
 		$aConv= Conversation::findOrFail($id);
 		$aThread = Thread::select("*")->where("conversation_id",'=',$id)->firstOrFail()->get();
-		//return $aConv;
+		
+		
+		
 		return view('Dashboard.edit')->with(['aConv' => $aConv, 'aThread' =>$aThread]);
 	}
 
@@ -152,28 +156,37 @@ class DashboardController extends Controller {
 	public function update($id, Request $request)
 	{
 		$aConv=Conversation::findOrFail($id);
+		$aThread = Thread::select("*")->where("conversation_id",'=',$id)->firstOrFail();
 		if($request->has('Content'))
 		{
 			$aConv->update($request->all());
+			session()->flash('flash_message', 'Conversation updated');
 		}
 		else
 		{
-			$aThread = Thread::select("*")->where("conversation_id",'=',$id)->firstOrFail();
+			
 			// by definition if the conversation is validated the first thread also is
 			if($aConv->Pending ==1)
 			{
 				$aConv->Pending=0;
 				$aThread->Pending=0;
+				session()->flash('flash_message', 'Conversation is now published');
 			}
 			else
 			{
 				$aConv->Pending=1;
 				$aThread->Pending=1;
+				session()->flash('flash_message', 'Conversation is now unpublished');
 			}
+			
+			
 		}
 		
 		$aConv->save();
 		$aThread->save();
+		
+		
+		
 		return redirect('Dashboard');
 	}
 

@@ -1,3 +1,5 @@
+@include('flash.flash')
+
 <head>
 <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 <script type="text/javascript" src="{{ URL::asset('js/LoginControl.js') }}"></script>
@@ -34,9 +36,12 @@
 </header>
 
 <body>
-<div class="col-md-8 col-md-offset-2">
-@yield('content')
-</div>
+
+	@yield('flash')
+	<div class="col-md-8 col-md-offset-2">
+		@yield('content')
+	</div>
+
 </body>
 
 <footer>
