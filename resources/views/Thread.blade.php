@@ -44,14 +44,6 @@
 {!! Form::open(['method'=>'POST','action'=>["ThreadController@store",'id' => $lstOfMessages[0]->conversation_id], 'class'=>'form-group']) !!} 
 
 <div class="container">
-	@if(!\Auth::check())
-	<div class="row">
-		<div class="col-lg-4">
-			{!! Form::label('Visitor',"Your name") !!}
-			{!! Form::text('Visitor','',['class' => 'form-control']) !!}
-		</div>
-	</div>
-	@endif
 	<div class="row">
 		<div class="col-lg-8">
 		{!! Form::text('Content',null,['class' => "form-control"]) !!}
