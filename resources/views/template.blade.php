@@ -20,13 +20,13 @@
     <li>
 	@if (\Auth::guest())
     <a href="/auth/login">login</a>
-	@else
-	<a href="/auth/logout">logout</a>
-	@endif
-    </li>
+	</li>
 	<li>
 	<a href="/auth/register">Register</a>
 	</li>
+	@else
+	<a href="/auth/logout">logout</a>
+	@endif
 </ul>	
 </nav>
 </div>

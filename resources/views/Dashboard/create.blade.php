@@ -1,5 +1,5 @@
 @extends('template')
-Dashboard Create page
+
 @section('content')
 
 {!! Form::open(['url' => 'Dashboard']) !!}
@@ -8,7 +8,7 @@ Dashboard Create page
 	{!! Form::text('Title', null, ['class' => 'form-control']) !!}<p>
 	{!! Form::label('Content','Content: ') 	!!}
 	{!! Form::textarea('Content', null, ['class' => 'form-control'])!!}
-	{!! Form::submit('Submit',['class' => 'form-control'])!!}
+	{!! Form::submit('Submit',['class' => 'btn btn-primary'])!!}
 </div>	
 {!! Form::close() !!}
 @stop
