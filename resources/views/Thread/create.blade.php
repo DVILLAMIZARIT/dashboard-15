@@ -5,9 +5,11 @@ Thread create page returned by ThreadController@create
 
 {!! Form::open(['url' => 'Thread']) !!}
 <div class="form-group">
-	{!! Form::label('Content','Content: ') 	!!}
-	{!! Form::textarea('Content', null, ['class' => 'form-control'])!!}
-	{!! Form::submit('Submit',['class' => 'form-control'])!!}
+
+{!! Form::label('Content','Content: ') 	!!}
+{!! Form::textarea('Content', null, ['class' => 'form-control'])!!}
+{!! Form::submit('Submit',['class' => 'form-control'])!!}
+
 </div>	
 {!! Form::close() !!}
 

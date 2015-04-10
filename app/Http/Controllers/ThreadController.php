@@ -33,12 +33,12 @@ class ThreadController extends Controller {
 	 */
 	public function create(Request $request)
 	{	
-		return $request->all();
+		/*
 		$aThread= new Thread;
 		$aThread->Content = $request->Content;
 		$aThread->userid = \Auth::id();
-		$aThread->created_at= Carbon::now();
-		
+		$aThread->created_at= Carbon::now(); */
+		return "Error Thread creation has been re-routed";
 		return view('Thread.create')->with('aThread',$aThread1);
 	}
 
@@ -132,16 +132,17 @@ class ThreadController extends Controller {
 	 */
 	public function update($id, Request $request)
 	{
-	
+		//we recover the Thread to update
 		$aThread = Thread::findOrFail($id);
-	
+			
+		// if we want to update the content
 		if($request->has('Content'))
 		{	
 			$aThread->update($request->all());
 			session()->flash('flash_message', 'Thread updated');
 		}
 		else
-		{	
+		{	// we want to publish/unpublish it
 			if ($aThread->Pending == 0)
 			{
 				$aThread->Pending = 1;

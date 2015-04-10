@@ -40,16 +40,31 @@
 	</tr>
 @endforeach
 </table>
+
 {!! Form::open(['method'=>'POST','action'=>["ThreadController@store",'id' => $lstOfMessages[0]->conversation_id], 'class'=>'form-group']) !!} 
-{!! Form::text('Content',null,['class' => "form-control"]) !!}
-{!! Form::submit('Add a Comment',['class' => "btn btn-primary"]) !!}
-{!! Form::close() !!}
+
+<div class="container">
+	@if(!\Auth::check())
+	<div class="row">
+		<div class="col-lg-4">
+			{!! Form::label('Visitor',"Your name") !!}
+			{!! Form::text('Visitor','',['class' => 'form-control']) !!}
+		</div>
+	</div>
+	@endif
+	<div class="row">
+		<div class="col-lg-8">
+		{!! Form::text('Content',null,['class' => "form-control"]) !!}
+		{!! Form::submit('Add a Comment',['class' => "btn btn-primary"]) !!}
+		{!! Form::close() !!}
+		</div>
+	</div>
+</div>
+<a href="../Dashboard"> Go Back </a>
 
 @else
-<center>
 {{!! Form::label("All threads are pending or the Administrator unpublished every Threads")!!}}
 <br>{{!! Form::label("Please contact your Administrator")!!}}</center>
 @endif
 
-<br><a href="../Dashboard"> Go Back </a>
 @stop
