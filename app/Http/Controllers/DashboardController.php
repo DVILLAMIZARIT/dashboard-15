@@ -28,7 +28,7 @@ class DashboardController extends Controller {
 	 * Display every conversation/topics with the first Thread related
 	 * @return Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		
 		$Threads=array();
@@ -70,7 +70,7 @@ class DashboardController extends Controller {
 		}
 		
 		
-		return view('Dashboard')->with(['dashboard'=>$Result,'adminID' =>$admin]);
+		return view('dashboard')->with(['dashboard'=>$Result,'adminID' =>$admin]);
 	}
 
 	/**
@@ -80,7 +80,7 @@ class DashboardController extends Controller {
 	 */
 	public function create()
 	{
-		return view('Dashboard.create');
+		return view('dashboard.create');
 	}
 
 	/**
@@ -107,7 +107,7 @@ class DashboardController extends Controller {
 		
 		// create a session for this flash message 
 		session()->flash('flash_message', 'Conversation created and waiting for approval');
-		return redirect('Dashboard');
+		return redirect('dashboard');
 	}
 
 	/**
@@ -136,7 +136,7 @@ class DashboardController extends Controller {
 		// but just in case....
 		if(\Auth::guest())
 		{ 
-			//return redirect('Dashboard') ;
+			//return redirect('dashboard') ;
 		}
 		
 		$aConv= Conversation::findOrFail($id);
@@ -144,7 +144,7 @@ class DashboardController extends Controller {
 		
 		
 		
-		return view('Dashboard.edit')->with(['aConv' => $aConv, 'aThread' =>$aThread]);
+		return view('dashboard.edit')->with(['aConv' => $aConv, 'aThread' =>$aThread]);
 	}
 
 	/**
@@ -187,7 +187,7 @@ class DashboardController extends Controller {
 		
 		
 		
-		return redirect('Dashboard');
+		return redirect('dashboard');
 	}
 
 	/**

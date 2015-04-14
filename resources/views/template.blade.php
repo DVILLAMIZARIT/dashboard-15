@@ -2,8 +2,9 @@
 
 <head>
 <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-<script type="text/javascript" src="{{ URL::asset('js/LoginControl.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/RequestControl.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/jquery-2.1.3.js') }}"></script>
+
 <head>
 
 <header>

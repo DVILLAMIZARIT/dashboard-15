@@ -69,12 +69,14 @@ class ConversationSeeder extends Seeder {
 		Model::unguard();
 		DB::table('conversations')->delete();
 		
-		$request =new CreateConversationRequest();
-		$request->Title="Demonstration: Conversation level contain title";
-		$request->Content="Demonstration: Thread level contain content";
-		$request->Pending=false;
-		Conversation::customCreate($request);	
-		
+		for($i=0;$i<80;$i++)
+		{
+			$request =new CreateConversationRequest();
+			$request->Title="Conversation $i level contain title";
+			$request->Content="Thread from conversation $i";
+			$request->Pending=false;
+			Conversation::customCreate($request);	
+		}
 		/* roughly equivalent to the following instructions without selection the first user available
 		// Take the first ID in the table
 		$user=User::first()->id;

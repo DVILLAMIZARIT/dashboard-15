@@ -1,5 +1,5 @@
 <?php
-
+use App\Conversation;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,8 +11,42 @@
 |
 */
 
-Route::get('/', 'DashboardController@index');
+Route::get('/', function(){return view('messages');});
 Route::get('home', 'DashboardController@index');
+Route::get('messages',function(Request $request)
+{
+	// we recover all the data sent by the ajax request
+	$keys=$request::all();
+
+	// test of the query parameter
+	if($keys['query']!="")
+	{
+		$query=Conversation::where("Title","like","%".$keys['query']."%")->get();
+	}
+	else
+	{
+		$query=Conversation::all();	
+	}
+
+	//test of the limit parameter
+	if($keys['limit']!=00)
+	{
+		$query=$query->take($keys['limit']);
+	}
+
+	
+	return response()->json($query);
+	
+	
+	/*//Conversation::all()->take(y)->skip(x)
+	
+	/**
+	 * Determine if the request is the result of an AJAX call.
+	 * @return bool
+	 * public function ajax() // isEmptyString($key)
+	 */
+	
+});
 
 //Route::resource('control','DashboardController');
 Route::resource('Dashboard','DashboardController');
