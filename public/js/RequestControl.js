@@ -118,87 +118,84 @@ RequestHandler.prototype.displayRequest=function (buttonid)
 	}
 	
 	
-	// recover data from form, send a request to laravel
-	// once in the ajax object, this' context change
-	// if we want to still have access to the class while beeing in the ajax object
-	// we can send an instance of the RequestHandler ( here Handler)
+// recover data from form, send a request to laravel
+// once in the ajax object, this' context change
+// if we want to still have access to the class while beeing in the ajax object
+// on solution is to send an instance of the RequestHandler ( here Handler)
 RequestHandler.prototype.sendrequest= function (Handler,buttonid)
-	{
-		var mquery = document.getElementById('query').value;
-		var mlimit = parseInt(Handler.nbLinesPerPage);
-		//document.getElementById('limit').value;
-		
-		// we determine the offset according to the page we are currently looking
-		var offset =(parseInt(Handler.currentPage)-1) * parseInt(Handler.nbLinesPerPage);
-		//if(buttonid!="search")
-		//{
-		//	mlimit= 
-		//}
-		var obj= {'query':mquery,'limit':mlimit,'offset':offset}
-				
-		$.ajax({
-		type    :"GET",
-		data :(obj),
-		url     :"messages",
-		dataType:"json",
-		error: function(e){
-				   alert( 'Error ' + e );
-				},
-		success :function(response) {
-					Handler.data=response;
-					 // we initialize the number of pages according the data returned by laravel
-					console.log(response);
-					$(document).ready(Handler.senddata());
-					// ajax is asynchronous, we must 
-					
-					if(buttonid=="search")
-					{
-						Handler.initTotalNbPages = Math.round(Handler.data[Handler.data.length-1]['Title']/Handler.nbLinesPerPage);
-						Handler.totalNbPages=Handler.initTotalNbPages;
-					}
-					$(document).ready(Handler.checkPageIntegrity());
-					//$(document).ready(Handler.updateIndicators());
-					
-				return false;
-			}
-		})
-	}
+{
+	var mquery = document.getElementById('query').value;
+	var mlimit = parseInt(Handler.nbLinesPerPage);
+	//document.getElementById('limit').value;
 	
-	// this function send the appropriate information to the form 
-	// page = the current page you want to display
-	RequestHandler.prototype.senddata=function ()
-	{
-	 var table =document.getElementById('resultats');
-	 var limit=0;
-	 var response ="<tr ='result odd selected' >";
-		
-		// if we do not have enough lines to make a complete page
-		if(this.nbLinesPerPage>this.data.length)
-		{	limit=this.data.length-1; }
-		else // we know enough lines to make a full page
-		{	limit=this.nbLinesPerPage;}
+	// we determine the offset according to the page we are currently looking
+	var offset =(parseInt(Handler.currentPage)-1) * parseInt(Handler.nbLinesPerPage);
 	
-		console.log(this.data.length);
-		//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
-		for(var i=0;i<limit-1;i++)
-		{	
+	var obj= {'query':mquery,'limit':mlimit,'offset':offset}
 			
-			response+="<tr class='result even'><td>"+this.data[i]['id']+"</td>";
+	$.ajax({
+	type    :"GET",
+	data :(obj),
+	url     :"messages",
+	dataType:"json",
+	error: function(e){
+			   alert( 'Error ' + e );
+			},
+	success :function(response) {
+				Handler.data=response;
+				 // we initialize the number of pages according the data returned by laravel
+				console.log(response);
+				$(document).ready(Handler.senddata());
+				// ajax is asynchronous, we must 
+				
+				if(buttonid=="search")
+				{
+					Handler.initTotalNbPages = Math.round(Handler.data[Handler.data.length-1]['Title']/Handler.nbLinesPerPage);
+					Handler.totalNbPages=Handler.initTotalNbPages;
+				}
+				$(document).ready(Handler.checkPageIntegrity());
+				//$(document).ready(Handler.updateIndicators());
+				
+			return false;
+		}
+	})
+}
+	
+// this function send the appropriate information to the form 
+// page = the current page you want to display
+RequestHandler.prototype.senddata=function ()
+{
+ var table =document.getElementById('resultats');
+ var limit=0;
+ var response ="<tr ='result odd selected' >";
+	
+	// if we do not have enough lines to make a complete page
+	if(this.nbLinesPerPage>this.data.length)
+	{	limit=this.data.length-1; }
+	else // we know enough lines to make a full page
+	{	limit=this.nbLinesPerPage;}
+
+	console.log(this.data.length);
+	//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
+	for(var i=0;i<limit-1;i++)
+	{	
+		
+		response+="<tr class='result even'><td>"+this.data[i]['id']+"</td>";
+		response+="<td>"+this.data[i]['Title']+"</td>";
+		response+="<td>"+this.data[i]['Pending']+"</td></tr>";
+		
+		// in order to alternate background color
+		if(i<limit-1)
+		{
+			i++;
+			response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
 			response+="<td>"+this.data[i]['Title']+"</td>";
 			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
-			
-			// in order to alternate background color
-			if(i<limit-1)
-			{
-				i++;
-				response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
-				response+="<td>"+this.data[i]['Title']+"</td>";
-				response+="<td>"+this.data[i]['Pending']+"</td></tr>";
-			}
 		}
-		response +="</tr>";
-		table.innerHTML=response;
-		
-		return false;
-		//document.write(response);
 	}
+	response +="</tr>";
+	table.innerHTML=response;
+	
+	return false;
+	//document.write(response);
+}

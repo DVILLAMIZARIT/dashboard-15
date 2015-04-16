@@ -68,7 +68,7 @@
 </div>
 
 <div class="item_edit_container">
-<div class="item_edit" , style: {width: (expandWidth() - 27) + 'px'}" style="margin-left: 2px; width: 258px;">
+<div class="item_edit">
 <form class="edit_form">
 	<h2>Search</h2>
 		
