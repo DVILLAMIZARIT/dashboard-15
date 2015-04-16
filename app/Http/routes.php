@@ -76,21 +76,9 @@ Route::get('messages',function(Request $request)
 	$fakeConversation->Title=$query->count();
 	array_push($response,$fakeConversation); 
 	return $response;	
-	
-	//return $response;
 
+	//return response()->json($query);
 
-	return response()->json($query);
-	
-	
-	/*//Conversation::all()->take(y)->skip(x)
-	
-	/**
-	 * Determine if the request is the result of an AJAX call.
-	 * @return bool
-	 * public function ajax() // isEmptyString($key)
-	 */
-	
 });
 
 //Route::resource('control','DashboardController');
