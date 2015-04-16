@@ -59,16 +59,7 @@ Route::get('messages',function(Request $request)
 			array_push($response,$qry); 
 			//return response()->json($query);		
 		}
-		//else
-		//{
-			//return $response;
-			//return response()->json($query);
-			//$fakeConversation = new Conversation();
-			//$fakeConversation->Title=intval($i);
-			//array_push($response,$fakeConversation); 
-			//return $response;
-			//break;
-//}
+
 	}
 	
 	$fakeConversation = new Conversation();

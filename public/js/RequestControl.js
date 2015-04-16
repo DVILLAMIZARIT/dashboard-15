@@ -62,16 +62,7 @@ RequestHandler.prototype.checkPageIntegrity =function ()
 			this.currentPage=1;
 		}
 		
-	
-		//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
-		
-		// if by any action made by the user the current page is not legal to be displayed
-		// we go back to the first page
-		//if(this.data.length<=firstline)
-		//{
-		//	this.currentPage=1;	
-		//}//
-		
+
 	}
 	
 	// this function will handle every display request from the interface 
@@ -180,12 +171,11 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 	 var table =document.getElementById('resultats');
 	 var limit=0;
 	 var response ="<tr ='result odd selected' >";
-	 var lastline = parseInt(this.nbLinesPerPage)*parseInt(this.currentPage);
 		
 		// if we do not have enough lines to make a complete page
 		if(this.nbLinesPerPage>this.data.length)
 		{	limit=this.data.length-1; }
-		else // we know that we have more lines than the page is supposed to contain
+		else // we know enough lines to make a full page
 		{	limit=this.nbLinesPerPage;}
 	
 		console.log(this.data.length);
