@@ -78,11 +78,7 @@ Route::get('messages',function(Request $request)
 	return $response;	
 	
 	//return $response;
-	$fakeConversation = new Conversation();
-	$fakeConversation->Title=intval($i);
-	array_push($response,$fakeConversation); 
-	
-//	return $keys['limit'];
+
 
 	return response()->json($query);
 	
