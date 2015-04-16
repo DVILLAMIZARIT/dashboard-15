@@ -2,7 +2,7 @@
 @section('content')
 <div id="admin_page" class="with_sidebar" style="min-height: 505px;">
 	<div id="sidebar">
-		<div class="panel sidebar_section" id="filters_sidebar_section" data-bind="template: 'filtersTemplate'">
+	<div class="panel sidebar_section" id="filters_sidebar_section">
 	<h2>Filters</h2>
 <div class="filters">
 	<div class="key ">
@@ -63,29 +63,52 @@
 
 <div class="item_edit_container">
 <div class="item_edit" , style: {width: (expandWidth() - 27) + 'px'}" style="margin-left: 2px; width: 258px;">
-<form class="edit_form", submit: saveItem">
+<form class="edit_form">
 	<h2>Search</h2>
 		
 		<div class="text" >
 		<label>Title:</label>
-		<input type="text", id="query">
+		<input type="text" id="query">
 		</div>
-		
-		<label>Limit:</label>			
-		<select id='limit'>
-		<option>00</option>
-		<option>10</option>
-		<option >20</option>
-		<option >30</option>
-		<option >40</option>
-		<option >50</option>
-		</select>
-		
+				
 	<div class="control_buttons">
-		<input type="button" value="Search" onClick="sendrequest()">
+		<input type="button" value="Search" id="search" >
 	</div>
-</form>
+	
 
+</form>
+<script type="text/javascript">
+// instantiate the class
+var Handler = new RequestHandler();
+
+// generate the listeners
+
+		$(':text').change(function() {
+			// if an event is already triggered
+			if ($(this).data("executing")) return;
+			// we prevent the execution of several request while the first one is not finished
+			$(this).data("executing", true)
+			// the Handler process the request
+			Handler.displayRequest($(this).attr('id'));
+			// another request can now be processed
+			$(this).removeData("executing");			
+		});
+	
+		$(':button').click(function() {
+			if ($(this).data("executing")) return;
+			$(this).data("executing", true)
+			Handler.displayRequest($(this).attr('id')); 
+			$(this).removeData("executing")			
+		});
+	
+		
+		$('select').change(function() {
+			if ($(this).data("executing")) return;
+			$(this).data("executing", true)
+			Handler.displayRequest($(this).attr('id')); 
+			$(this).removeData("executing")			
+		});
+</script>
 </div></div>
 </div>
 

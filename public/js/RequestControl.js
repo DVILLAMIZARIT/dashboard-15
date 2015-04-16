@@ -1,129 +1,126 @@
 
-var RequestHandler
+// constructor of RequestHandler
+function RequestHandler()
 {
-	// the data from the request
-	var data;
-	// the current total number of pages
-	var totalNbPages;
-	// we add a click event listener for button only
-	var nbLinesPerPage;
-	// the currentPage we are displaying
-	var currentPage;
-	// event listener for button
-	
-	function setData(nData)
-	{
-		data=nData;
-	};
-	
-	function setTotalNbPages(nbpages)
-	{
-		totalNbPages=nbpages;
-	};
-
-	function setNbLinesPerPage(nblines)
-	{
-		nbLinesPerPage=nblines;
-	};
-	
-	// init the variables	
-	function init()
-	{
-		nbLinesPerPage = parseInt(document.getElementById ('nbLinesPerPage').value);
-		// at the init we force the page to be the first one
-		currentPage = 1;
+		// the data from the request
+		this.data;
+		// the current total number of pages
+		this.totalNbPages=0;
+		// the initial total number of pages that we do not want to forget
+		this.initTotalNbPages=0;
+		// we add a click event listener for button only
+		this.nbLinesPerPage=parseInt(document.getElementById ('nbLinesPerPage').value);
+		// the currentPage we are displaying
+		this.currentPage=1;
+		// event listener
 		
-		$(':text').change(function() {
-		displayRequest($(this).attr('id'));    
-		});
-	
-		$(':button').click(function() {
-			displayRequest($(this).attr('id'));    
-		});
-	
-		// event listener for select
-		$('select').change(function() {
-			displayRequest($(this).attr('id'));   	
-		});
-	}
-	
-	// function is to indicators values of the form
-	function updateIndicators()
-	{
+}
+
+RequestHandler.prototype.setData= function(nData)
+{
+	this.data=nData;
+};
+
+RequestHandler.prototype.setTotalNbPages= function(nbpages)
+{
+	this.totalNbPages=nbpages;
+};
+
+RequestHandler.prototype.setNbLinesPerPage= function (nblines)
+{
+	this.nbLinesPerPage=nblines;
+};
+
+RequestHandler.prototype.updateIndicators= function ()
+	{//this.totalNbPages = Math.round(this.data.length/this.nbLinesPerPage);
+		
 		// update the total number of pages available
-		nbLinesPerPage = parseInt(document.getElementById ('nbLinesPerPage').value);
-		totalNbPages = Math.round(data.length/nbLinesPerPage);
-		document.getElementById('totalNbPages').innerHTML=totalNbPages;
-		document.getElementById('currentPage').value=currentPage;	
+		this.nbLinesPerPage = parseInt(document.getElementById ('nbLinesPerPage').value);
+		document.getElementById('totalNbPages').innerHTML=this.totalNbPages;
+		document.getElementById('currentPage').value=this.currentPage;	
 	}
 	
 	// This function check if any of our manipulation send us to the wrong page or not 
-	function checkPageIntegrity()
+RequestHandler.prototype.checkPageIntegrity =function ()
 	{
-	
+
+		this.updateIndicators();
 		// we do not want to see the fourth page if we only have three
 	
-		//alert(parseInt(document.getElementById('currentPage').value));
-		
 		// if we input negative value
 		if(parseInt(document.getElementById('currentPage').value)<=0)
 		{
-			currentPage=1;
+			this.currentPage=1;
 		}
 		
 		// if we input too high value
-		if(parseInt(document.getElementById('currentPage').value)<=parseInt(totalNbPages))
+		if(parseInt(document.getElementById('currentPage').value)<=parseInt(this.totalNbPages))
 		{
-			currentPage=document.getElementById('currentPage').value;
+			this.currentPage=document.getElementById('currentPage').value;
+		}else
+		{
+			this.currentPage=1;
 		}
 		
-		var firstline = (parseInt(currentPage)-parseInt(1))*parseInt(nbLinesPerPage);
+	
+		//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
 		
-		// if by any action made by the user the current page is not illegible to be displayed
+		// if by any action made by the user the current page is not legal to be displayed
 		// we go back to the first page
-		if(data.length<=firstline)
-		{
-			currentPage=1;	
-		}
+		//if(this.data.length<=firstline)
+		//{
+		//	this.currentPage=1;	
+		//}//
 		
-		updateIndicators();
 	}
 	
 	// this function will handle every display request from the interface 
-	function displayRequest(buttonid)
-	{
+RequestHandler.prototype.displayRequest=function (buttonid)
+	{	
 		switch(buttonid)
 		{
+			case "search":
+				// Initial request
+				this.sendrequest(this,"search");
+			break;
+			
 			case "next":
 				// if we did not reach the last page already
-				if(currentPage<totalNbPages)
+				if(this.currentPage<this.totalNbPages)
 				{
-					//alert("test");
-					currentPage=parseInt(currentPage)+1;
-					senddata(); 
-					updateIndicators();
+					this.currentPage=parseInt(this.currentPage)+1;
+					this.sendrequest(this,"next");
 				}
 			break;
 						
 			case "prev":
 				// if we did not reach the first page already
-				if(currentPage>1)
+				if(this.currentPage>1)
 				{
-					currentPage=parseInt(currentPage)-1;
-					senddata();
-					updateIndicators();
+					this.currentPage=parseInt(this.currentPage)-1;
+					this.sendrequest(this,"prev");
 				}
 			break;
 			
 			case "nbLinesPerPage":
-				updateIndicators();
-				checkPageIntegrity();
-				senddata();
+				this.nbLinesPerPage=parseInt(document.getElementById ('nbLinesPerPage').value);
+				this.totalNbPages=Math.round(this.initTotalNbPages/(parseInt(this.nbLinesPerPage)/parseInt(10)));
+				//this.totalNbPages = Math.round(this.totalNbPages/this.nbLinesPerPage);
+				//if  initial request has been made
+				if(this.initTotalNbPages!=0)
+				{	
+					this.sendrequest(this,"nbLinesPerPage");
+				}
 			break;
 			
 			case "currentPage":
-				checkPageIntegrity();
-				senddata();
+				if(this.initTotalNbPages!=0)
+				{
+					this.currentPage=document.getElementById('currentPage').value;
+					// in order to check what input the user
+					this.checkPageIntegrity();
+					this.sendrequest(this,"currentPage");
+				}
 			break;
 			
 		}
@@ -131,70 +128,83 @@ var RequestHandler
 	
 	
 	// recover data from form, send a request to laravel
-	function sendrequest()
+	// once in the ajax object, this' context change
+	// if we want to still have access to the class while beeing in the ajax object
+	// we can send an instance of the RequestHandler ( here Handler)
+RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 	{
-		init();
 		var mquery = document.getElementById('query').value;
-		var mlimit = document.getElementById ('limit').value;
+		var mlimit = parseInt(Handler.nbLinesPerPage);
+		//document.getElementById('limit').value;
 		
-		var obj= {'query':mquery,'limit':mlimit,'offset':1}
-		
+		// we determine the offset according to the page we are currently looking
+		var offset =(parseInt(Handler.currentPage)-1) * parseInt(Handler.nbLinesPerPage);
+		//if(buttonid!="search")
+		//{
+		//	mlimit= 
+		//}
+		var obj= {'query':mquery,'limit':mlimit,'offset':offset}
+				
 		$.ajax({
 		type    :"GET",
 		data :(obj),
 		url     :"messages",
 		dataType:"json",
 		error: function(e){
-				   //alert( 'Error ' + e );
+				   alert( 'Error ' + e );
 				},
 		success :function(response) {
-					data=response;
+					Handler.data=response;
 					 // we initialize the number of pages according the data returned by laravel
-					updateIndicators();
-					document.getElementById('totalNbPages').innerHTML=totalNbPages;
-					$(document).ready(senddata(1));
-					return false;
+					//console.log(response);
+					$(document).ready(Handler.senddata());
+					// ajax is asynchronous, we must 
+					
+					if(buttonid=="search")
+					{
+						Handler.initTotalNbPages = Math.round(Handler.data[Handler.data.length-1]['Title']/Handler.nbLinesPerPage);
+						Handler.totalNbPages=Handler.initTotalNbPages;
+					}
+					$(document).ready(Handler.checkPageIntegrity());
+					//$(document).ready(Handler.updateIndicators());
+					
+				return false;
 			}
 		})
 	}
-
-
 	
 	// this function send the appropriate information to the form 
 	// page = the current page you want to display
-	function senddata()
+	RequestHandler.prototype.senddata=function ()
 	{
 	 var table =document.getElementById('resultats');
 	 var limit=0;
 	 var response ="<tr ='result odd selected' >";
-	 
-		var lastline = parseInt(nbLinesPerPage)*parseInt(currentPage);
+		var lastline = parseInt(this.nbLinesPerPage)*parseInt(this.currentPage);
+		
 		// if we do not have enough lines to make a complete page
-		if(lastline>data.length)
-		{	limit=data.length; }
+		if(lastline>this.data.length)
+		{	limit=this.data.length; }
 		else // we know that we have more lines than the page is supposed to contain
 		{	limit=lastline;}
-		
-		// we start with the first line of the requested page
-		var firstline = (parseInt(currentPage)-parseInt(1))*parseInt(nbLinesPerPage);
 	
-		for(var i=firstline;i<limit-1;i++)
+		//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
+		for(var i=0;i<limit-1;i++)
 		{	
-			response+="<tr class='result even'><td>"+data[i]['id']+"</td>";
-			response+="<td>"+data[i]['Title']+"</td>";
-			response+="<td>"+data[i]['Pending']+"</td></tr>";
+			response+="<tr class='result even'><td>"+this.data[i]['id']+"</td>";
+			response+="<td>"+this.data[i]['Title']+"</td>";
+			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
 			
 			// in order to alternate background color
 			i++;
 			
-			response+="<tr class='result odd'><td>"+data[i]['id']+"</td>";
-			response+="<td>"+data[i]['Title']+"</td>";
-			response+="<td>"+data[i]['Pending']+"</td></tr>";
+			response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
+			response+="<td>"+this.data[i]['Title']+"</td>";
+			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
 		}
 		response +="</tr>";
 		table.innerHTML=response;
+		
 		return false;
 		//document.write(response);
 	}
-
-}
