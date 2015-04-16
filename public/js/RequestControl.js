@@ -156,7 +156,7 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 		success :function(response) {
 					Handler.data=response;
 					 // we initialize the number of pages according the data returned by laravel
-					//console.log(response);
+					console.log(response);
 					$(document).ready(Handler.senddata());
 					// ajax is asynchronous, we must 
 					
@@ -180,27 +180,31 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 	 var table =document.getElementById('resultats');
 	 var limit=0;
 	 var response ="<tr ='result odd selected' >";
-		var lastline = parseInt(this.nbLinesPerPage)*parseInt(this.currentPage);
+	 var lastline = parseInt(this.nbLinesPerPage)*parseInt(this.currentPage);
 		
 		// if we do not have enough lines to make a complete page
-		if(lastline>this.data.length)
-		{	limit=this.data.length; }
+		if(this.nbLinesPerPage>this.data.length)
+		{	limit=this.data.length-1; }
 		else // we know that we have more lines than the page is supposed to contain
-		{	limit=lastline;}
+		{	limit=this.nbLinesPerPage;}
 	
+		console.log(this.data.length);
 		//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
 		for(var i=0;i<limit-1;i++)
 		{	
+			
 			response+="<tr class='result even'><td>"+this.data[i]['id']+"</td>";
 			response+="<td>"+this.data[i]['Title']+"</td>";
 			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
 			
 			// in order to alternate background color
-			i++;
-			
-			response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
-			response+="<td>"+this.data[i]['Title']+"</td>";
-			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
+			if(i<limit-1)
+			{
+				i++;
+				response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
+				response+="<td>"+this.data[i]['Title']+"</td>";
+				response+="<td>"+this.data[i]['Pending']+"</td></tr>";
+			}
 		}
 		response +="</tr>";
 		table.innerHTML=response;

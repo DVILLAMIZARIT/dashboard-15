@@ -17,7 +17,6 @@ Route::get('home', 'DashboardController@index');
 Route::get('messages',function(Request $request)
 {
 
-	
 	// we recover all the data sent by the ajax request
 	$keys=$request::all();
 	$query="";
