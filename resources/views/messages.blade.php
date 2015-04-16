@@ -1,5 +1,11 @@
 @extends('admintemplate')
 @section('content')
+<div id=wrapper>
+<header>
+<h1><a href="Dashboard">Dashboard</a></h1>
+</header>
+</div>
+
 <div id="admin_page" class="with_sidebar" style="min-height: 505px;">
 	<div id="sidebar">
 	<div class="panel sidebar_section" id="filters_sidebar_section">
