@@ -129,8 +129,11 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 	//document.getElementById('limit').value;
 	
 	// we determine the offset according to the page we are currently looking
-	var offset =(parseInt(Handler.currentPage)-1) * parseInt(Handler.nbLinesPerPage);
-	
+	var offset =0;
+	if(buttonid!="search")
+	{
+		offset=(parseInt(Handler.currentPage)-1) * parseInt(Handler.nbLinesPerPage);
+	}
 	var obj= {'query':mquery,'limit':mlimit,'offset':offset}
 			
 	$.ajax({
@@ -140,16 +143,15 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 	dataType:"json",
 	error: function(e){
 			   alert( 'Error ' + e );
-			},
+			}, 
 	success :function(response) {
 				Handler.data=response;
 				 // we initialize the number of pages according the data returned by laravel
-				console.log(response);
-				$(document).ready(Handler.senddata());
-				// ajax is asynchronous, we must 
-				
+				//console.log(response);
+				$(document).ready(Handler.senddata());	
 				if(buttonid=="search")
-				{
+				{	 
+					Handler.currentPage=1;
 					Handler.initTotalNbPages = Math.round(Handler.data[Handler.data.length-1]['Title']/Handler.nbLinesPerPage);
 					Handler.totalNbPages=Handler.initTotalNbPages;
 				}
@@ -162,35 +164,30 @@ RequestHandler.prototype.sendrequest= function (Handler,buttonid)
 }
 	
 // this function send the appropriate information to the form 
-// page = the current page you want to display
 RequestHandler.prototype.senddata=function ()
 {
  var table =document.getElementById('resultats');
  var limit=0;
  var response ="<tr ='result odd selected' >";
 	
-	// if we do not have enough lines to make a complete page
-	if(this.nbLinesPerPage>this.data.length)
-	{	limit=this.data.length-1; }
-	else // we know enough lines to make a full page
-	{	limit=this.nbLinesPerPage;}
-
 	console.log(this.data.length);
 	//var firstline = (parseInt(this.currentPage)-parseInt(1))*parseInt(this.nbLinesPerPage);
-	for(var i=0;i<limit-1;i++)
+	for(var i=0;i<this.data.length-1;i++)
 	{	
 		
 		response+="<tr class='result even'><td>"+this.data[i]['id']+"</td>";
 		response+="<td>"+this.data[i]['Title']+"</td>";
 		response+="<td>"+this.data[i]['Pending']+"</td></tr>";
+		i++;
 		
 		// in order to alternate background color
-		if(i<limit-1)
+		if(i<this.data.length-1)
 		{
-			i++;
+			
 			response+="<tr class='result odd'><td>"+this.data[i]['id']+"</td>";
 			response+="<td>"+this.data[i]['Title']+"</td>";
 			response+="<td>"+this.data[i]['Pending']+"</td></tr>";
+			
 		}
 	}
 	response +="</tr>";
